@@ -1,4 +1,4 @@
-# Mock Exam 1
+# Lab: CKAD Mock Exam 1
 
 ## Application Design and Build
 
@@ -18,7 +18,13 @@ In the `ckad-multi-containers` namespace, create a pod named `tres-containers-po
 <details>
 <summary><b>View Solution</b></summary>
 
-Use below YAML to create desired pod:
+Use below imperative command to create the pod with 3 containers:
+
+```bash
+k -n ckad-multi-containers run tres-containers-pod --image=busybox:1.28 $do > q1_pod.yaml
+```
+
+Then edit the generated YAML file to add the other 2 containers and make necessary changes as per the requirements. The final YAML file should look like this:
 
 ```yaml
 apiVersion: v1
@@ -173,7 +179,13 @@ The pod's container should be named `ubuntu-server`; the container will sleep fo
 <details>
 <summary><b>View Solution</b></summary>
 
-Create a YAML file with the content as below:
+Create the pod template using the imperative command:
+
+```bash
+k run ckad-ubuntu-qwfefefwe --image=ubuntu -n ckad-pod-design $do > q4_pod.yaml
+```
+
+Then edit the generated YAML file to make necessary changes as per the requirements. The final YAML file should look like this:
 
 ```yaml
 apiVersion: v1
@@ -198,33 +210,6 @@ status: {}
 ```
 
 Then use `kubectl apply -f file_name.yaml` to create the required object.
-
-Alternatively, you can use this command for similar outcome:
-
-```bash
-kubectl run ckad-ubuntu-qwfefefwe \
-  --image=ubuntu \
-  --restart=Always \
-  --namespace=ckad-pod-design \
-  --overrides='
-{
-  "apiVersion": "v1",
-  "kind": "Pod",
-  "metadata": {
-    "name": "ckad-ubuntu-qwfefefwe"
-  },
-  "spec": {
-    "restartPolicy": "Always",
-    "containers": [
-      {
-        "name": "ubuntu-server",
-        "image": "ubuntu",
-        "command": ["sleep", "3600"]
-      }
-    ]
-  }
-}'
-```
 
 </details>
 
@@ -639,11 +624,29 @@ endpoints:
 EOF
 ```
 
+For some reason, endpoint slice is not working in KodeKloud labs, so we will create the endpoint using the `v1` API as shown below:
+
+```bash
+student-node ~ ➜ kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: external-webserver-ckad01-svcn
+subsets:
+  - addresses:
+      - ip: $IP_ADDR
+    ports:
+      - port: 9999
+EOF
+```
+
 Finally check if the `curl test` works now:
 
 ```bash
-student-node ~ ➜  kubectl --context cluster3 run --rm  -i test-curl-pod --image=curlimages/curl --restart=Never -- curl -m 2 external-webserver-ckad01-svcn...
-<title>Welcome to nginx!</title>...
+student-node ~ ➜  k run test --image=curlimages/curl -it --rm -- sh
+$ ➜ curl external-webserver-ckad01-svcn
+...<h1>Welcome to nginx!</h1>
+$ ➜ exit
 ```
 
 </details>

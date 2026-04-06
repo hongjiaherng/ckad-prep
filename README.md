@@ -32,11 +32,11 @@
 
     ```bash
     cat << 'EOF' >> ~/.vimrc
-    set expandtab
-    set tabstop=2
-    set shiftwidth=2
-    set autoindent
-    set number
+    set expandtab # Use spaces instead of tabs
+    set tabstop=2 # Number of spaces that a <Tab> in the file counts for
+    set shiftwidth=2 # Number of spaces to use for each step of (auto)indent
+    set autoindent # Copy indent from current line when starting a new line
+    set number # Show line numbers
     EOF
     ```
 
