@@ -30,8 +30,8 @@ spec:
     - image: nginx:1.16
       name: main-container
       resources: {}
-      ports:
-        - containerPort: 80
+      # ports:
+      #   - containerPort: 80
       volumeMounts:
         - name: my-vol
           mountPath: /usr/share/nginx/html
@@ -445,6 +445,13 @@ Install the `headlamp` chart on the Kubernetes cluster with the following comman
 helm upgrade --install kubernetes-dashboard headlamp/headlamp -n cd-tool-apd --create-namespace
 ```
 
+Or
+
+```bash
+helm repo update
+helm install kubernetes-dashboard headlamp/headlamp -n cd-tool-apd --create-namespace
+```
+
 </details>
 
 **Details (Verification):**
@@ -503,6 +510,9 @@ As the scenario mention to create a pod along with its service with name `pod21-
 
 ```bash
 kubectl run pod21-ckad-svcn --image=nginx:alpine --expose --port=80
+# Or
+kubectl run pod21-ckad-svcn --image=nginx:alpine
+kubectl expose pod pod21-ckad-svcn --port=80 --name=pod21-ckad-svcn
 ```
 
 It will create a pod and also exposes the pod at port 80.
@@ -789,6 +799,7 @@ spec:
     image: ubuntu
     name: ubuntu-sleeper
     securityContext:
+      # runAsUser: 0 # This is optional as by default container runs as root user if not specified otherwise.
       capabilities:
         add: ["SYS_TIME", "NET_ADMIN"]
 ```
@@ -904,8 +915,8 @@ We created two **ConfigMaps** ( `ckad02-config1-aecs` and `ckad02-config2-aecs` 
 
 Create two environment variables for the above pod with below specifications:
 
-1.  `GREETINGS` with the data from configmap `ckad02-config1-aecs`
-2.  `WHO` with the data from configmap `ckad02-config2-aecs`.
+1. `GREETINGS` with the data from configmap `ckad02-config1-aecs`
+2. `WHO` with the data from configmap `ckad02-config2-aecs`.
 
 **Note:** Only make the necessary changes. Do not modify other fields of the pod.
 
@@ -976,10 +987,10 @@ kubectl replace -f 1-pod-cm.yaml --force
 **Task:**
 Create a Kubernetes Pod named `ckad15-memory`, with a container named `ckad15-memory` running the `polinux/stress` image, and configure it to use the following specifications:
 
-*   Command: `stress`
-*   Arguments: `["--vm", "1", "--vm-bytes", "10M", "--vm-hang", "1"]`
-*   Requested memory: `10Mi`
-*   Memory limit: `10Mi`
+* Command: `stress`
+* Arguments: `["--vm", "1", "--vm-bytes", "10M", "--vm-hang", "1"]`
+* Requested memory: `10Mi`
+* Memory limit: `10Mi`
 
 <details>
 <summary><b>View Solution</b></summary>
@@ -1143,7 +1154,7 @@ Now check for reason using:
 kubectl describe pod ckad-aom
 ```
 
-We will see that there is a problem with the **nginx container**. 
+We will see that there is a problem with the **nginx container**.
 Open yaml file and check in **spec -> nginx container** you can see an error with `mountPath` -> **mountPath: "/var/log"** change it to **mountPath: `/var/log/nginx`** and apply changes.
 
 </details>
@@ -1161,7 +1172,7 @@ Open yaml file and check in **spec -> nginx container** you can see an error wit
 **Context:** `kubectl config use-context cluster2`
 
 **Task:**
-Use the manifest file `/root/resourcedefinition.yaml` and extend kubernetes API for **mongodb** service. 
+Use the manifest file `/root/resourcedefinition.yaml` and extend kubernetes API for **mongodb** service.
 
 But there is an error with the file content. Find the error and fix the issue.
 
@@ -1192,4 +1203,3 @@ kubectl create -f resourcedefinition.yaml
 **Details (Verification):**
 
 * CRD created
-
