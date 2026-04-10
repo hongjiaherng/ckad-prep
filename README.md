@@ -1,47 +1,11 @@
 # CKAD Exam Preparation
 
-## First Step
+In the real exam, you'll be given a different instance to be ssh into for each question. So, if we were to use a `~/.bashrc` and `~/.vimrc` file, we'd have to set them up for each question. In addtion, in the real exam, the autocompletion is already set up for us fairly well (i.e., including `k` alias), except no shortcut alias like `--dry-run=client -o yaml` and `--force --grace-period=0`. 
 
-1. Bash setup
-    a) Open the terminal and edit the `.bashrc` file:
+So, my approach is to skip setting up a `~/.bashrc` and `~/.vimrc` file entirely, and use the following vim command when I feel the need while editing in vim:
 
-    ```bash
-    vim ~/.bashrc
-    ```
+```vim
+:set et ts=2 sw=2 ai nu
+```
 
-    b) Add the following lines to the end of the file:
-
-    ```bash
-    alias k=kubectl
-    alias h=helm
-    export do='--dry-run=client -o yaml'
-    export now='--force --grace-period=0'
-    
-    source <(kubectl completion bash)
-    complete -F __start_kubectl k
-    source <(helm completion bash)
-    ```
-
-    c). Save and source it:
-
-    ```bash
-    source ~/.bashrc
-    ```
-
-2. Vim setup
-
-    ```bash
-    cat << 'EOF' >> ~/.vimrc
-    set expandtab # Use spaces instead of tabs
-    set tabstop=2 # Number of spaces that a <Tab> in the file counts for
-    set shiftwidth=2 # Number of spaces to use for each step of (auto)indent
-    set autoindent # Copy indent from current line when starting a new line
-    set number # Show line numbers
-    EOF
-    ```
-
-3. Check the setup
-
-    ```bash
-    k get nodes
-    ```
+This will use space for tab, tabstop=2, shiftwidth=2, auto indent, and line number respectively. 
