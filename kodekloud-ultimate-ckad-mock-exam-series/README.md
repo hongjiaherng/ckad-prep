@@ -1,0 +1,1 @@
+KodeKloud’s Mock Exam Series labs don’t include per-question evaluation, so these README files are used to verify answers after each attempt when needed.
